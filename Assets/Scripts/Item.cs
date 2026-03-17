@@ -1,0 +1,26 @@
+using UnityEngine;
+
+public enum ItemType
+{
+    cell,
+    lever,
+    screw,
+    spring,
+}
+
+public class Item : MonoBehaviour
+{
+    public ItemType myItemType;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}

@@ -42,6 +42,16 @@ Tilemap:
   m_GameObject: {fileID: 2582527303408974484}
   m_Enabled: 1
   m_Tiles:
+  - first: {x: -11, y: -11, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 76
+      m_TileSpriteIndex: 75
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: -11, y: -8, z: 0}
     second:
       serializedVersion: 2
@@ -956,6 +966,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 4c96c0b00d34f4f1e80b3e57640c53fd, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: d02c6d7bddb074a35aca7691fb6a192f, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: e336e7c4f75714f5bb3a4bb6bab2b942, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: -3017023237086674178, guid: 51bafeafb83cc44ada9b3a68ca205584, type: 3}
@@ -1107,8 +1119,10 @@ Tilemap:
     m_Data: {fileID: 210941485440549652, guid: 053814b8d7942444380bab80c2952381, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 484081214533146487, guid: b0ff9ee1c422e4ba69e75f3ba954fbaf, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: -7278544124799597275, guid: 23b8c81e3c6ec4a4ab25655769255a6d, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 76
+  - m_RefCount: 77
     m_Data:
       e00: 1
       e01: 0
@@ -1127,13 +1141,13 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 76
+  - m_RefCount: 77
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -11, y: -8, z: 0}
-  m_Size: {x: 11, y: 9, z: 1}
+  m_Origin: {x: -11, y: -11, z: 0}
+  m_Size: {x: 9, y: 12, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -1164,7 +1178,7 @@ TilemapRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
@@ -1254,7 +1268,7 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &2711203751772920468
+--- !u!114 &2103679761828444898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

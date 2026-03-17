@@ -1,50 +1,54 @@
+using System;
 using UnityEngine;
+using UniRx;
+
 
 public class Box : MonoBehaviour
 {
     [HideInInspector] public ItemType requestedItem;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private Subject<bool> onItemProcessed = new Subject<bool>();
+    public IObservable<bool> OnItemProcessed => onItemProcessed;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Start() {}
+    void Update() {}
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         Item item = collision.transform.GetComponent<Item>();
         if (item != null)
         {
-            ItemType receivedType = item.myItemType;
-            
-            // 判定テスト
-            if (receivedType == requestedItem)
+            bool isCorrect = (item.myItemType == requestedItem);
+
+            if (isCorrect)
             {
-                Debug.Log(gameObject.name + "：正解！ " + receivedType + " をもらった！");
-                // TODO: Managerにスコア加算を報告し、次のお題をもらう
+                Debug.Log(gameObject.name + "：正解！");
             }
             else
             {
-                Debug.Log(gameObject.name + "：違う！ 欲しいのは " + requestedItem + " だ！");
-                // TODO: ペナルティ処理
+                Debug.Log(gameObject.name + "：違う！");
             }
+
+            // ★Managerを直接呼ぶのではなく、結果(true/false)をストリームに流すだけ！
+            onItemProcessed.OnNext(isCorrect);
         }
         Destroy(collision.gameObject);
     }
 
-    // GameManagerから呼ばれる
-    public void SetRequest(ItemType type)
+    public void SetRequest(ItemType type, Sprite sprite)
     {
         requestedItem = type;
-        Debug.Log(gameObject.name + " の新しい要求: " + requestedItem);
+        if (spriteRenderer != null && sprite != null)
+        {
+            spriteRenderer.sprite = sprite;
+        }
+    }
 
-        // ※いずれここに、要求されたアイテムのドット絵アイコンを
-        // 人の頭上のUI（吹き出しなど）に表示する処理を書くと綺麗にまとまります。
+    // ★追加：Boxが破棄された時にストリームを閉じる（メモリリーク防止）
+    private void OnDestroy()
+    {
+        onItemProcessed.OnCompleted();
+        onItemProcessed.Dispose();
     }
 }

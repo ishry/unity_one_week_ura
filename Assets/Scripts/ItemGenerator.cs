@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject prefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,8 +14,8 @@ public class ItemGenerator : MonoBehaviour
         
     }
 
-    public void OnClicked()
+    public void SpawnItem(GameObject prefabToSpawn)
     {
-        Instantiate(prefab, transform.position, Quaternion.identity);
+        Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
     }
 }

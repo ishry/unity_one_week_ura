@@ -1,13 +1,5 @@
 using UnityEngine;
 
-public enum ItemType
-{
-    cell,
-    lever,
-    screw,
-    spring,
-}
-
 public class Item : MonoBehaviour
 {
     public ItemType myItemType;

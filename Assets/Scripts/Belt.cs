@@ -7,11 +7,15 @@ public class Belt : MonoBehaviour
 
     [SerializeField] private GearFlipper gearFlipper_L;
     [SerializeField] private GearFlipper gearFlipper_R;
-    [SerializeField] private float scrollSpeed = 2.0f; 
+    [SerializeField] private float scrollSpeed = 1.0f; 
+    [SerializeField] private float incrementSpeed = 0.1f;
+
+    private float totalSpeed;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        totalSpeed = scrollSpeed;
     }
 
     public void OnClicked()
@@ -20,10 +24,13 @@ public class Belt : MonoBehaviour
         {
             return;
         }
-        
+
         Debug.Log(gameObject.name + " is clicked!"); 
+        totalSpeed += incrementSpeed;
         isReversed = !isReversed;
-        animator.SetFloat("Speed", isReversed ? -1f : 1f); 
+        animator.SetFloat("Speed", isReversed ? -totalSpeed : totalSpeed); 
+        gearFlipper_L.speedMagnification = totalSpeed;
+        gearFlipper_R.speedMagnification = totalSpeed;
         gearFlipper_L.FlipGear();
         gearFlipper_R.FlipGear();
     }
@@ -35,8 +42,8 @@ public class Belt : MonoBehaviour
         if (rb != null)
         {
             // 現在の向きに合わせて速度を計算 (反転時はマイナス)
-            float direction = isReversed ? -1f : 1f;
-            float targetVelocity = scrollSpeed * direction;
+            float direction = isReversed ? -totalSpeed : totalSpeed;
+            float targetVelocity = totalSpeed * direction;
 
             rb.linearVelocity = new Vector2(targetVelocity, rb.linearVelocity.y);
         }
@@ -49,7 +56,7 @@ public class Belt : MonoBehaviour
         if (rb != null)
         {
             float direction = isReversed ? -0.1f : 0.1f;
-            float targetVelocity = scrollSpeed * direction;
+            float targetVelocity = totalSpeed * direction;
 
             rb.linearVelocity = new Vector2(targetVelocity, rb.linearVelocity.y);
         }

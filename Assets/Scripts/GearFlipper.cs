@@ -18,10 +18,12 @@ public class GearFlipper : MonoBehaviour
     private float currentZRotation = 0f;
     public bool IsFlipping { get; private set; } = false;
 
+    [HideInInspector] public float speedMagnification = 1.0f; //速度倍率．Beltから与えられる．
+
     void Update()
     {
         // 1. Z軸の継続的な回転（マイナスにすることで表から見て右回転）
-        currentZRotation -= rotationSpeed * Time.deltaTime;
+        currentZRotation -= rotationSpeed * speedMagnification * Time.deltaTime;
         currentZRotation %= 360f; // 値が無限に大きくならないようループさせる
 
         // 2. Y軸（裏返し）とZ軸（継続回転）の角度を合成して適用

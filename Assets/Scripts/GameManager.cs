@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sprite crossSprite;  // バツの画像
     [SerializeField] private float resultDisplayTime = 1.0f; // 表示時間
 
+    [Header("Game Settings")]
+    [SerializeField] private float initialWaitTime = 2.0f; // 開始までの待機時間（秒）
+
     private int score = 0;
     private int life = 3;
     
@@ -58,8 +61,7 @@ public class GameManager : MonoBehaviour
         }
         UpdateTexts();
         UpdateLifeUI();
-        AssignUniqueRequestsToBoxes();
-        SpawnRandomItem();
+        StartCoroutine(StartGameRoutine());
     }
     
 
@@ -67,6 +69,16 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private IEnumerator StartGameRoutine()
+    {
+        // 指定した時間だけ待機する
+        yield return new WaitForSeconds(initialWaitTime);
+
+        // 待機が終わったら、最初のお題とアイテムをセットする
+        AssignUniqueRequestsToBoxes();
+        SpawnRandomItem();
     }
 
     // イベントを受け取った時の処理

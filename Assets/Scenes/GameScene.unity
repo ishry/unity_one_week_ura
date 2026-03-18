@@ -489,6 +489,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 116709253}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &116709253
 SpriteRenderer:
   serializedVersion: 2
@@ -1178,6 +1179,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 263447388}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &263447388
 SpriteRenderer:
   serializedVersion: 2
@@ -1259,7 +1261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 5f217049d544a4ca4912bd994904984b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.3
+      value: -6.1
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 5f217049d544a4ca4912bd994904984b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1356,6 +1358,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 362725114}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &362725114
 SpriteRenderer:
   serializedVersion: 2
@@ -1667,6 +1670,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 425564326}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &425564326
 SpriteRenderer:
   serializedVersion: 2
@@ -1836,7 +1840,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gearFlipper_L: {fileID: 1071623202}
   gearFlipper_R: {fileID: 1421411978}
-  scrollSpeed: 2
+  scrollSpeed: 1
+  incrementSpeed: 0.1
 --- !u!95 &513351608
 Animator:
   serializedVersion: 7
@@ -2061,6 +2066,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 585484847}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &585484847
 SpriteRenderer:
   serializedVersion: 2
@@ -2230,7 +2236,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gearFlipper_L: {fileID: 116709252}
   gearFlipper_R: {fileID: 857967873}
-  scrollSpeed: 2
+  scrollSpeed: 1
+  incrementSpeed: 0.1
 --- !u!95 &602155197
 Animator:
   serializedVersion: 7
@@ -2380,6 +2387,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 647019634}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &647019634
 SpriteRenderer:
   serializedVersion: 2
@@ -2795,6 +2803,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 857967874}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &857967874
 SpriteRenderer:
   serializedVersion: 2
@@ -2915,6 +2924,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 973818491}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &973818491
 SpriteRenderer:
   serializedVersion: 2
@@ -3215,6 +3225,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 1071623203}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &1071623203
 SpriteRenderer:
   serializedVersion: 2
@@ -3296,7 +3307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 5f217049d544a4ca4912bd994904984b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.3
+      value: 6.1
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 5f217049d544a4ca4912bd994904984b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3469,7 +3480,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gearFlipper_L: {fileID: 973818490}
   gearFlipper_R: {fileID: 425564325}
-  scrollSpeed: 2
+  scrollSpeed: 1
+  incrementSpeed: 0.1
 --- !u!95 &1157929011
 Animator:
   serializedVersion: 7
@@ -3715,7 +3727,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2253911629886400664, guid: 5f217049d544a4ca4912bd994904984b, type: 3}
       propertyPath: m_Name
-      value: microwave (2)
+      value: Character3
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 5f217049d544a4ca4912bd994904984b, type: 3}
       propertyPath: m_LocalScale.x
@@ -3934,6 +3946,7 @@ MonoBehaviour:
   circleSprite: {fileID: 21300000, guid: 54830115fbf764267bf042636cbc14c5, type: 3}
   crossSprite: {fileID: 21300000, guid: 5007101c6a96d4697bafd6c8496b2111, type: 3}
   resultDisplayTime: 1
+  initialWaitTime: 2
 --- !u!4 &1354601189
 Transform:
   m_ObjectHideFlags: 0
@@ -4059,7 +4072,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gearFlipper_L: {fileID: 647019633}
   gearFlipper_R: {fileID: 585484846}
-  scrollSpeed: 2
+  scrollSpeed: 1
+  incrementSpeed: 0.1
 --- !u!95 &1388549416
 Animator:
   serializedVersion: 7
@@ -4209,6 +4223,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 1421411979}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &1421411979
 SpriteRenderer:
   serializedVersion: 2
@@ -4393,6 +4408,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 1466085067}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &1466085067
 SpriteRenderer:
   serializedVersion: 2
@@ -4594,6 +4610,7 @@ MonoBehaviour:
   gearSpriteRenderer: {fileID: 1557968519}
   frontSprite: {fileID: 246016472635340299, guid: 9bd15828895e84be399a8e0e7dee8064, type: 3}
   backSprite: {fileID: -6718599581960999340, guid: 7d28b10ac190540dfb0be058ef0603a6, type: 3}
+  speedMagnification: 1
 --- !u!212 &1557968519
 SpriteRenderer:
   serializedVersion: 2
@@ -4791,7 +4808,7 @@ Transform:
   m_GameObject: {fileID: 1702565157}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5, y: -2.65, z: 0}
+  m_LocalPosition: {x: 4.8, y: -2.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4961,8 +4978,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Score: 00000'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 260562f69ca8c4a62b593904ade0fe7b, type: 2}
-  m_sharedMaterial: {fileID: -6178557812755419786, guid: 260562f69ca8c4a62b593904ade0fe7b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5328,7 +5345,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gearFlipper_L: {fileID: 263447387}
   gearFlipper_R: {fileID: 1466085066}
-  scrollSpeed: 2
+  scrollSpeed: 1
+  incrementSpeed: 0.1
 --- !u!114 &1798083945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5732,7 +5750,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gearFlipper_L: {fileID: 362725113}
   gearFlipper_R: {fileID: 1557968518}
-  scrollSpeed: 2
+  scrollSpeed: 1
+  incrementSpeed: 0.1
 --- !u!95 &1977019660
 Animator:
   serializedVersion: 7
@@ -5859,7 +5878,7 @@ Transform:
   m_GameObject: {fileID: 1987820415}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: -2.65, z: 0}
+  m_LocalPosition: {x: -4.8, y: -2.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

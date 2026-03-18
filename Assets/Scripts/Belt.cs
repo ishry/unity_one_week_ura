@@ -5,7 +5,8 @@ public class Belt : MonoBehaviour
     private Animator animator;
     private bool isReversed = false;
 
-    [Header("speed of conveyor")]
+    [SerializeField] private GearFlipper gearFlipper_L;
+    [SerializeField] private GearFlipper gearFlipper_R;
     [SerializeField] private float scrollSpeed = 2.0f; 
 
     void Start()
@@ -15,9 +16,16 @@ public class Belt : MonoBehaviour
 
     public void OnClicked()
     {
+        if (gearFlipper_L.IsFlipping || gearFlipper_R.IsFlipping)
+        {
+            return;
+        }
+        
         Debug.Log(gameObject.name + " is clicked!"); 
         isReversed = !isReversed;
         animator.SetFloat("Speed", isReversed ? -1f : 1f); 
+        gearFlipper_L.FlipGear();
+        gearFlipper_R.FlipGear();
     }
 
     private void OnCollisionStay2D(Collision2D collision)

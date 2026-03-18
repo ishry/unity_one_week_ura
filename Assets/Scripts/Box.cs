@@ -45,7 +45,11 @@ public class Box : MonoBehaviour
         }
     }
 
-    // ★追加：Boxが破棄された時にストリームを閉じる（メモリリーク防止）
+    public void ShowResultIcon(Sprite resultSprite)
+    {
+        spriteRenderer.sprite = resultSprite;
+    }
+    
     private void OnDestroy()
     {
         onItemProcessed.OnCompleted();

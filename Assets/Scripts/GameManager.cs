@@ -2,6 +2,7 @@ using UnityEngine;
 using UniRx;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public enum ItemType
 {
@@ -30,6 +31,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image[] lifeImages; // 3つのハートのImageを格納する配列
     [SerializeField] private Sprite heartFull;   // 満タンのハート画像
     [SerializeField] private Sprite heartEmpty;  // 空のハート画像
+
+    [Header("Result UI")]
+    [SerializeField] private Sprite circleSprite; // マルの画像
+    [SerializeField] private Sprite crossSprite;  // バツの画像
+    [SerializeField] private float resultDisplayTime = 1.0f; // 表示時間
 
     private int score = 0;
     private int life = 3;
@@ -79,8 +85,38 @@ public class GameManager : MonoBehaviour
         }
         UpdateTexts();
         UpdateLifeUI();
-        AssignUniqueRequestsToBoxes();
-        SpawnRandomItem();
+        StartCoroutine(ShowResultEffect(box, isCorrect));
+    }
+
+    private IEnumerator ShowResultEffect(Box targetBox, bool isCorrect)
+    {
+
+        // 1. 各Boxの画像を更新（入った箱にはマルかバツ、それ以外は透明）
+        foreach (GameObject boxObj in boxes)
+        {
+            Box b = boxObj.GetComponent<Box>();
+            if (b != null)
+            {
+                if (b == targetBox)
+                {
+                    b.ShowResultIcon(isCorrect ? circleSprite : crossSprite);
+                }
+                else
+                {
+                    b.ShowResultIcon(null);
+                }
+            }
+        }
+
+        // 2. 指定時間（1秒）待機
+        yield return new WaitForSeconds(resultDisplayTime);
+
+        // 3. ゲームオーバーでなければ次をセット
+        if (life > 0)
+        {
+            AssignUniqueRequestsToBoxes(); // Boxの画像を再設定（透明度も白に戻る）
+            SpawnRandomItem();
+        }
     }
 
     public void AddScore(int amount)

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UniRx;
 using TMPro;
+using UnityEngine.UI;
 
 public enum ItemType
 {
@@ -25,6 +26,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ItemData[] itemDatabase;
     [SerializeField] private TMP_Text scoreText;
 
+    [Header("Life UI")]
+    [SerializeField] private Image[] lifeImages; // 3つのハートのImageを格納する配列
+    [SerializeField] private Sprite heartFull;   // 満タンのハート画像
+    [SerializeField] private Sprite heartEmpty;  // 空のハート画像
+
     private int score = 0;
     private int life = 3;
     
@@ -45,6 +51,7 @@ public class GameManager : MonoBehaviour
             }
         }
         UpdateTexts();
+        UpdateLifeUI();
         AssignUniqueRequestsToBoxes();
         SpawnRandomItem();
     }
@@ -71,6 +78,7 @@ public class GameManager : MonoBehaviour
             DecreaseLife();
         }
         UpdateTexts();
+        UpdateLifeUI();
         AssignUniqueRequestsToBoxes();
         SpawnRandomItem();
     }
@@ -86,6 +94,8 @@ public class GameManager : MonoBehaviour
         life--;
         Debug.Log("ミス！ 残りライフ: " + life);
 
+        UpdateLifeUI();
+
         if (life <= 0)
         {
             GameOver();
@@ -95,6 +105,22 @@ public class GameManager : MonoBehaviour
     public void UpdateTexts()
     {
         scoreText.text = "Score: " + score.ToString("00000");
+    }
+
+    private void UpdateLifeUI()
+    {
+        for (int i = 0; i < lifeImages.Length; i++)
+        {
+            // 現在のライフ数よりインデックスが小さければ「満タン」、それ以上なら「空」
+            if (i < life)
+            {
+                lifeImages[i].sprite = heartFull;
+            }
+            else
+            {
+                lifeImages[i].sprite = heartEmpty;
+            }
+        }
     }
 
     private void GameOver()

@@ -3,7 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using UnityEngine.InputSystem; 
-using TMPro; // ▼▼▼ 追加：TextMeshProを扱うために必要 ▼▼▼
+using TMPro;
+using UnityEngine.EventSystems;
 
 public class TitleManager : MonoBehaviour
 {
@@ -16,41 +17,45 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private TMP_Text startText; // 「CLICK TO START」のテキスト
     [SerializeField] private float blinkDuration = 1.0f; // 点滅の周期（フェードアウトに1秒、フェードインに1秒）
 
-    private bool isTransitioning = false;
-    private Tweener blinkTweener; // ▼▼▼ 追加：点滅アニメーションを管理する変数 ▼▼▼
+    [Header("UI設定")]
+    [SerializeField] private GameObject optionPanel;
+    [SerializeField] private Button optionButton;
+
+    [Header("SE")]
+    [SerializeField] private AudioClip gameStartSE;
+
+    private bool isSceneTransitioning = false;
+    private Tweener blinkTweener;
+
+    private bool isOptionOpen = false;
 
     void Start()
     {
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.raycastTarget = false;
 
-        // ▼▼▼ 追加：点滅アニメーションを開始 ▼▼▼
+        // 点滅アニメーションを開始
         if (startText != null)
         {
-            // DOTweenでアルファ値を0（透明）にする
-            // .SetLoops(-1, LoopType.Yoyo) で無限に（-1）ヨーヨー（行って戻って）させる
             blinkTweener = startText.DOFade(0.0f, blinkDuration)
                                     .SetLoops(-1, LoopType.Yoyo)
-                                    .SetEase(Ease.InOutSine); // スムーズな加減速
-        }
+                                    .SetEase(Ease.InOutSine);
+        }        
+        optionPanel.SetActive(false); // 最初はオプションパネルをオフにする
+        optionButton.interactable = true;  // 最初はボタンを押せる
+        
     }
 
     void Update()
     {
-        if (!isTransitioning)
+        // シーン遷移中 or オーディオオプションを開いている時はクリック無効
+        if (isSceneTransitioning || isOptionOpen) return;
+
+        // マウスが接続されていて、左クリックが押されたフレームのみ判定
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            bool isClicked = false;
-
-            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                isClicked = true;
-            }
-            else if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
-            {
-                isClicked = true;
-            }
-
-            if (isClicked)
+            // マウスカーソルがUI（ボタンやスライダーなど）の上に無い時だけシーン遷移する
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
                 StartTransition();
             }
@@ -59,9 +64,10 @@ public class TitleManager : MonoBehaviour
 
     private void StartTransition()
     {
-        isTransitioning = true;
+        isSceneTransitioning = true;
+        SEManager.Instance.PlaySE(gameStartSE);
         
-        // ▼▼▼ 追加：クリックされたら、点滅を停止する ▼▼▼
+        // クリックされたら点滅停止
         if (blinkTweener != null)
         {
             // trueを渡すと、現在のアルファ値で即座に終了する
@@ -77,5 +83,20 @@ public class TitleManager : MonoBehaviour
                  {
                      SceneManager.LoadScene(nextSceneName);
                  });
+    }
+
+    public void OpenOptionPanel()
+    {
+        if (isSceneTransitioning) return;
+        isOptionOpen = true;
+        if (optionPanel != null) optionPanel.SetActive(true);
+        if (optionButton != null) optionButton.interactable = false;
+    }
+
+    public void CloseOptionPanel()
+    {
+        isOptionOpen = false;
+        if (optionPanel != null) optionPanel.SetActive(false);
+        if (optionButton != null) optionButton.interactable = true;
     }
 }

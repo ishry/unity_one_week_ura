@@ -1,4 +1,5 @@
 using UnityEngine;
+using UniRx;
 
 public class Belt : MonoBehaviour
 {
@@ -10,40 +11,84 @@ public class Belt : MonoBehaviour
     [SerializeField] private float scrollSpeed = 1.0f; 
     [SerializeField] private float incrementSpeed = 0.1f;
 
-    private float totalSpeed;
+    public static ReactiveProperty<float> SharedSpeed;
+    //private float totalSpeed;
+
+    [HideInInspector] public bool canClick;
+
+    [SerializeField] private ConveyorArrow conveyorArrow;
+
+    [SerializeField] private AudioClip clickSE;
+
+    void Awake()
+    {
+        // 一番最初に誕生したベルトが初期化を行う
+        if (SharedSpeed == null)
+        {
+            SharedSpeed = new ReactiveProperty<float>(scrollSpeed);
+        }
+    }
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        totalSpeed = scrollSpeed;
+        canClick = false; // 最初はoffにしておいて，game managaerが遅延してOnにする．
+
+        // SharedSpeed の値が変化した時，自動的に UpdateAnimationSpeed を呼ぶ
+        SharedSpeed.Subscribe(speed => 
+            {
+                UpdateAnimationSpeed(speed);
+            }).AddTo(this);
     }
 
     public void OnClicked()
     {
-        if (gearFlipper_L.IsFlipping || gearFlipper_R.IsFlipping)
-        {
-            return;
-        }
+        // ゲーム開始直後はクリックできない
+        if (!canClick) return;
 
-        Debug.Log(gameObject.name + " is clicked!"); 
-        totalSpeed += incrementSpeed;
+        // フリップアニメーション中はクリックできない
+        if (gearFlipper_L.IsFlipping || gearFlipper_R.IsFlipping) return;
+
+        //SE
+        SEManager.Instance.PlaySE(clickSE);
+
+        // 1. 【自分自身】の反転処理を行う
         isReversed = !isReversed;
-        animator.SetFloat("Speed", isReversed ? -totalSpeed : totalSpeed); 
-        gearFlipper_L.speedMagnification = totalSpeed;
-        gearFlipper_R.speedMagnification = totalSpeed;
         gearFlipper_L.FlipGear();
         gearFlipper_R.FlipGear();
+
+        // （矢印の見た目を反転させる。速度は次のスピードを予測して渡す）
+        conveyorArrow.ReverseArrow(SharedSpeed.Value + incrementSpeed);
+
+        // 2. 共有スピードをアップ
+        // 💡 ここで数値を足した瞬間、全ベルトの Subscribe が一斉に発火し、アニメーションが加速します！
+        SharedSpeed.Value += incrementSpeed;
+    }
+
+    private void UpdateAnimationSpeed(float speed)
+    {
+        // 自分の回転の向き（isReversed）を考慮してアニメーション速度をセット
+        animator.SetFloat("Speed", isReversed ? -speed : speed); 
+
+        // ギアの速度をセット
+        gearFlipper_L.speedMagnification = speed;
+        gearFlipper_R.speedMagnification = speed;
+
+        // 矢印の速度をセット
+        if (conveyorArrow != null)
+        {
+            conveyorArrow.UpdateSpeed(speed);
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
         Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-
         if (rb != null)
         {
-            // 現在の向きに合わせて速度を計算 (反転時はマイナス)
-            float direction = isReversed ? -totalSpeed : totalSpeed;
-            float targetVelocity = totalSpeed * direction;
+            // ▼ 変更：totalSpeed を SharedSpeed.Value に置き換え
+            float direction = isReversed ? -SharedSpeed.Value : SharedSpeed.Value;
+            float targetVelocity = SharedSpeed.Value * direction;
 
             rb.linearVelocity = new Vector2(targetVelocity, rb.linearVelocity.y);
         }
@@ -56,7 +101,7 @@ public class Belt : MonoBehaviour
         if (rb != null)
         {
             float direction = isReversed ? -0.1f : 0.1f;
-            float targetVelocity = totalSpeed * direction;
+            float targetVelocity = direction;
 
             rb.linearVelocity = new Vector2(targetVelocity, rb.linearVelocity.y);
         }

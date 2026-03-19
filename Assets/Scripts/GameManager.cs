@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private ItemGenerator itemGenerator;
     [SerializeField] private GameObject[] boxes;
+    [SerializeField] private Belt[] belts;
     [SerializeField] private ItemData[] itemDatabase;
     [SerializeField] private TMP_Text scoreText;
 
@@ -32,13 +33,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sprite heartFull;   // 満タンのハート画像
     [SerializeField] private Sprite heartEmpty;  // 空のハート画像
 
-    [Header("Result UI")]
+    [Header("正解判定")]
     [SerializeField] private Sprite circleSprite; // マルの画像
     [SerializeField] private Sprite crossSprite;  // バツの画像
+    [SerializeField] private AudioClip correctSE;
+    [SerializeField] private AudioClip incorrectSE;
     [SerializeField] private float resultDisplayTime = 1.0f; // 表示時間
 
     [Header("Game Settings")]
     [SerializeField] private float initialWaitTime = 2.0f; // 開始までの待機時間（秒）
+
+    [Header("Result画面")]
+    [SerializeField] private ResultManager resultManager;
+    
 
     private int score = 0;
     private int life = 3;
@@ -53,15 +60,15 @@ public class GameManager : MonoBehaviour
             Box box = boxObj.GetComponent<Box>();
             if (box != null)
             {
-                // Boxが「OnNext」で流してきた結果(isCorrect)を受け取って処理する
                 box.OnItemProcessed
-                    .Subscribe(isCorrect => HandleBoxProcessed(box, isCorrect))
+                    .Subscribe(result => HandleBoxProcessed(box, result.isCorrect, result.score))
                     .AddTo(this); 
             }
         }
         UpdateTexts();
         UpdateLifeUI();
-        StartCoroutine(StartGameRoutine());
+        AssignUniqueRequestsToBoxes(); // リクエストは最初から出しておく
+        StartCoroutine(StartGameRoutine()); //アイテム生成は遅延
     }
     
 
@@ -73,28 +80,33 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartGameRoutine()
     {
-        // 指定した時間だけ待機する
+        //1フレーム待ってからbeltの操作をOnにする
+        yield return null;
+        foreach (Belt belt in belts)
+        {
+            if (belt != null)
+            {
+                belt.canClick = true; //ベルトのクリック判定をOnに
+            }
+        }
         yield return new WaitForSeconds(initialWaitTime);
-
-        // 待機が終わったら、最初のお題とアイテムをセットする
-        AssignUniqueRequestsToBoxes();
         SpawnRandomItem();
     }
 
     // イベントを受け取った時の処理
-    private void HandleBoxProcessed(Box box, bool isCorrect)
+    private void HandleBoxProcessed(Box box, bool isCorrect, int score)
     {
         if (isCorrect)
         {
-            AddScore(100);
-            
-            // TODO: 正解したこのboxに対して、新しいお題を再設定する
-            // （他の3つのBoxと被らないItemTypeを選んで SetRequest を呼ぶ）
+            AddScore(score);
+            SEManager.Instance.PlaySE(correctSE);
         }
         else
         {
             DecreaseLife();
+            SEManager.Instance.PlaySE(incorrectSE);
         }
+        
         UpdateTexts();
         UpdateLifeUI();
         StartCoroutine(ShowResultEffect(box, isCorrect));
@@ -174,6 +186,23 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("ゲームオーバー！");
+
+        scoreText.enabled = false; //スコア表示を消しておく
+
+        //ベルトのクリック判定を停止
+        foreach (Belt belt in belts)
+        {
+            if (belt != null)
+            {
+                belt.canClick = false;
+            }
+        }
+
+        // ResultManagerの ShowResult に、現在の score を渡して演出開始
+        if (resultManager != null)
+        {
+            resultManager.ShowResult(score);
+        }
     }
 
     // 土管からランダムにアイテム生成

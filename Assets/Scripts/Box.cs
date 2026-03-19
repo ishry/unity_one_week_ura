@@ -7,9 +7,10 @@ public class Box : MonoBehaviour
 {
     [HideInInspector] public ItemType requestedItem;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private int boxScore = 100;
 
-    private Subject<bool> onItemProcessed = new Subject<bool>();
-    public IObservable<bool> OnItemProcessed => onItemProcessed;
+    private Subject<(bool isCorrect, int score)> onItemProcessed = new Subject<(bool, int)>();
+    public IObservable<(bool isCorrect, int score)> OnItemProcessed => onItemProcessed;
 
     void Start() {}
     void Update() {}
@@ -23,15 +24,13 @@ public class Box : MonoBehaviour
 
             if (isCorrect)
             {
-                Debug.Log(gameObject.name + "：正解！");
+                Debug.Log(gameObject.name + "：正解！ スコア: " + boxScore);
             }
             else
             {
                 Debug.Log(gameObject.name + "：違う！");
             }
-
-            // ★Managerを直接呼ぶのではなく、結果(true/false)をストリームに流すだけ！
-            onItemProcessed.OnNext(isCorrect);
+            onItemProcessed.OnNext((isCorrect, boxScore));
         }
         Destroy(collision.gameObject);
     }

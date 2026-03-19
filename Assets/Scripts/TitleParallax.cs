@@ -6,7 +6,7 @@ using UnityEngine.UI; // RawImageを使うために必要
 public struct ParallaxLayer
 {
     public RawImage image;
-    public float speed; // スクロール速度（奥は遅く、手前は速くする）
+    public float speed; // スクロール速度（奥は遅く，手前は速くする）
 }
 
 public class TitleParallax : MonoBehaviour
@@ -16,7 +16,7 @@ public class TitleParallax : MonoBehaviour
 
     void Update()
     {
-        // 毎フレーム、全レイヤーのUV座標を少しずつずらしてスクロールさせる
+        // 毎フレーム，全レイヤーのUV座標を少しずつずらしてスクロールさせる
         for (int i = 0; i < layers.Length; i++)
         {
             // 現在のUV座標を取得

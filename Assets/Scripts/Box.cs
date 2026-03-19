@@ -5,16 +5,15 @@ using UniRx;
 
 public class Box : MonoBehaviour
 {
-    [HideInInspector] public ItemType requestedItem;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private int boxScore = 100;
+
+    [HideInInspector] public ItemType requestedItem;
 
     private Subject<(bool isCorrect, int score)> onItemProcessed = new Subject<(bool, int)>();
     public IObservable<(bool isCorrect, int score)> OnItemProcessed => onItemProcessed;
 
-    void Start() {}
-    void Update() {}
-
+    // 成否判定
     void OnCollisionEnter2D(Collision2D collision)
     {
         Item item = collision.transform.GetComponent<Item>();
@@ -35,6 +34,7 @@ public class Box : MonoBehaviour
         Destroy(collision.gameObject);
     }
 
+    // Game Managerが次のお題をセット
     public void SetRequest(ItemType type, Sprite sprite)
     {
         requestedItem = type;
@@ -44,6 +44,7 @@ public class Box : MonoBehaviour
         }
     }
 
+    // Game Managerが成否の画像をセット
     public void ShowResultIcon(Sprite resultSprite)
     {
         spriteRenderer.sprite = resultSprite;

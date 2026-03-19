@@ -15,9 +15,9 @@ public class TitleManager : MonoBehaviour
 
     [Header("点滅テキスト設定")]
     [SerializeField] private TMP_Text startText; // 「CLICK TO START」のテキスト
-    [SerializeField] private float blinkDuration = 1.0f; // 点滅の周期（フェードアウトに1秒、フェードインに1秒）
+    [SerializeField] private float blinkDuration = 1.0f; // 点滅の周期（フェードアウトに1秒，フェードインに1秒）
 
-    [Header("UI設定")]
+    [Header("音量オプション")]
     [SerializeField] private GameObject optionPanel;
     [SerializeField] private Button optionButton;
 
@@ -25,9 +25,9 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private AudioClip gameStartSE;
 
     private bool isSceneTransitioning = false;
-    private Tweener blinkTweener;
-
     private bool isOptionOpen = false;
+
+    private Tweener blinkTweener;   
 
     void Start()
     {
@@ -51,10 +51,10 @@ public class TitleManager : MonoBehaviour
         // シーン遷移中 or オーディオオプションを開いている時はクリック無効
         if (isSceneTransitioning || isOptionOpen) return;
 
-        // マウスが接続されていて、左クリックが押されたフレームのみ判定
+        // マウスが接続されていて，左クリックが押されたフレームのみ判定
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // マウスカーソルがUI（ボタンやスライダーなど）の上に無い時だけシーン遷移する
+            // UI(音量オプションボタン)じゃない部分をクリックした場合はシーン遷移開始
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 StartTransition();
@@ -85,6 +85,7 @@ public class TitleManager : MonoBehaviour
                  });
     }
 
+    // ボタンが参照
     public void OpenOptionPanel()
     {
         if (isSceneTransitioning) return;
@@ -93,6 +94,7 @@ public class TitleManager : MonoBehaviour
         if (optionButton != null) optionButton.interactable = false;
     }
 
+    //　ボタンが参照
     public void CloseOptionPanel()
     {
         isOptionOpen = false;

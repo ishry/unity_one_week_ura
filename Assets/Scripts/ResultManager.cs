@@ -11,6 +11,7 @@ public class ResultManager : MonoBehaviour
     [SerializeField] private float dropDuration = 1.5f;
     [SerializeField] private float startY = 15.0f;
     [SerializeField] private float targetY = 0.0f;
+    [SerializeField] private AudioClip clickSE;
 
     [Header("テキストUI設定")]
     [SerializeField] private TMP_Text resultScoreText;   // スコア表示用TMP
@@ -40,6 +41,7 @@ public class ResultManager : MonoBehaviour
         if (isClicked)
         {
             // 現在のシーン名を取得して、同じシーンを再読み込み（リロード）する
+            SEManager.Instance.PlaySE(clickSE);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }

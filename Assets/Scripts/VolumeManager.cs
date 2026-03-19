@@ -49,17 +49,17 @@ public class VolumeManager : MonoBehaviour
         }
     }
 
-    // ▼ マスター音量を変更するメソッド
+    // マスター音量を変更するメソッド
     public void SetMasterVolume(float value)
     {
-        // 魔法の計算式： Mathf.Log10(value) * 20 でデシベルに変換
+        // デシベルに変換
         audioMixer.SetFloat(MasterVolumeKey, Mathf.Log10(value) * 20);
         // 設定を保存
         PlayerPrefs.SetFloat(MasterVolumeKey, value);
         PlayerPrefs.Save();
     }
 
-    // ▼ BGM音量を変更するメソッド
+    // BGM音量を変更するメソッド
     public void SetBGMVolume(float value)
     {
         audioMixer.SetFloat(BGMVolumeKey, Mathf.Log10(value) * 20);
@@ -67,7 +67,7 @@ public class VolumeManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // ▼ SE音量を変更するメソッド
+    // SE音量を変更するメソッド
     public void SetSEVolume(float value)
     {
         audioMixer.SetFloat(SEVolumeKey, Mathf.Log10(value) * 20);

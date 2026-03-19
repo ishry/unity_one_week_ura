@@ -22,10 +22,15 @@ public struct ItemData
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Item Data")]
+    [SerializeField] private ItemData[] itemDatabase;
+
+    [Header("Objects")]
     [SerializeField] private ItemGenerator itemGenerator;
     [SerializeField] private GameObject[] boxes;
-    [SerializeField] private Belt[] belts;
-    [SerializeField] private ItemData[] itemDatabase;
+    [SerializeField] private BeltConveyor[] beltConveyors;
+
+    [Header("Score UI")]
     [SerializeField] private TMP_Text scoreText;
 
     [Header("Life UI")]
@@ -40,16 +45,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip incorrectSE;
     [SerializeField] private float resultDisplayTime = 1.0f; // 表示時間
 
-    [Header("Game Settings")]
-    [SerializeField] private float initialWaitTime = 2.0f; // 開始までの待機時間（秒）
-
     [Header("Result画面")]
     [SerializeField] private ResultManager resultManager;
-    
 
+    [Header("ゲームパラメタ")]
+    [SerializeField] private float initialWaitTime = 2.0f; // 開始までの待機時間（秒）
+    
     private int score = 0;
     private int life = 3;
-    
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -65,35 +68,28 @@ public class GameManager : MonoBehaviour
                     .AddTo(this); 
             }
         }
-        UpdateTexts();
+        // UI初期化
+        UpdateScoreText();
         UpdateLifeUI();
+
+        // ゲーム開始
         AssignUniqueRequestsToBoxes(); // リクエストは最初から出しておく
         StartCoroutine(StartGameRoutine()); //アイテム生成は遅延
     }
     
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private IEnumerator StartGameRoutine()
     {
-        //1フレーム待ってからbeltの操作をOnにする
+        // 1フレーム待ってからbelt conveyorの操作をOnにする(リスタート時の連打防止)
         yield return null;
-        foreach (Belt belt in belts)
+        foreach (BeltConveyor beltConveyor in beltConveyors)
         {
-            if (belt != null)
-            {
-                belt.canClick = true; //ベルトのクリック判定をOnに
-            }
+            beltConveyor.canClick = true; //ベルトのクリック判定をOnに
         }
         yield return new WaitForSeconds(initialWaitTime);
         SpawnRandomItem();
     }
 
-    // イベントを受け取った時の処理
+    // Boxからイベントを受け取った時の処理
     private void HandleBoxProcessed(Box box, bool isCorrect, int score)
     {
         if (isCorrect)
@@ -106,16 +102,13 @@ public class GameManager : MonoBehaviour
             DecreaseLife();
             SEManager.Instance.PlaySE(incorrectSE);
         }
-        
-        UpdateTexts();
-        UpdateLifeUI();
         StartCoroutine(ShowResultEffect(box, isCorrect));
     }
 
     private IEnumerator ShowResultEffect(Box targetBox, bool isCorrect)
     {
 
-        // 1. 各Boxの画像を更新（入った箱にはマルかバツ、それ以外は透明）
+        // 各Boxの画像を更新
         foreach (GameObject boxObj in boxes)
         {
             Box b = boxObj.GetComponent<Box>();
@@ -132,29 +125,29 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 2. 指定時間（1秒）待機
+        // 待機
         yield return new WaitForSeconds(resultDisplayTime);
 
-        // 3. ゲームオーバーでなければ次をセット
+        // ゲームオーバーでなければ次をセット
         if (life > 0)
         {
-            AssignUniqueRequestsToBoxes(); // Boxの画像を再設定（透明度も白に戻る）
+            AssignUniqueRequestsToBoxes();
             SpawnRandomItem();
         }
     }
 
-    public void AddScore(int amount)
+    private void AddScore(int amount)
     {
         score += amount;
+        UpdateScoreText();    
         Debug.Log("スコアアップ！ 現在のスコア: " + score);
     }
 
-    public void DecreaseLife()
+    private void DecreaseLife()
     {
         life--;
-        Debug.Log("ミス！ 残りライフ: " + life);
-
         UpdateLifeUI();
+        Debug.Log("ミス！ 残りライフ: " + life);
 
         if (life <= 0)
         {
@@ -162,7 +155,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateTexts()
+    private void UpdateScoreText()
     {
         scoreText.text = "Score: " + score.ToString("00000");
     }
@@ -171,7 +164,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < lifeImages.Length; i++)
         {
-            // 現在のライフ数よりインデックスが小さければ「満タン」、それ以上なら「空」
+            // 現在のライフ数よりインデックスが小さければ「満タン」，それ以上なら「空」
             if (i < life)
             {
                 lifeImages[i].sprite = heartFull;
@@ -190,15 +183,12 @@ public class GameManager : MonoBehaviour
         scoreText.enabled = false; //スコア表示を消しておく
 
         //ベルトのクリック判定を停止
-        foreach (Belt belt in belts)
+        foreach (BeltConveyor beltConveyor in beltConveyors)
         {
-            if (belt != null)
-            {
-                belt.canClick = false;
-            }
+            beltConveyor.canClick = false; //ベルトのクリック判定をOnに
         }
 
-        // ResultManagerの ShowResult に、現在の score を渡して演出開始
+        // ResultManagerの ShowResult に，現在の score を渡して演出開始
         if (resultManager != null)
         {
             resultManager.ShowResult(score);

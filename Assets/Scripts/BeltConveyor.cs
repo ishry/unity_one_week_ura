@@ -12,6 +12,7 @@ public class BeltConveyor : MonoBehaviour
     [Header("パラメタ")]
     [SerializeField] private float scrollSpeed = 1.0f; 
     [SerializeField] private float incrementSpeed = 0.1f;
+    [SerializeField] private float maxSpeed = 3.0f;
 
     [Header("SE")]
     [SerializeField] private AudioClip clickSE;
@@ -44,7 +45,7 @@ public class BeltConveyor : MonoBehaviour
         SEManager.Instance.PlaySE(clickSE);
 
         // 1. 全体のスピードを上げる（これで全員の Subscribe が発火）
-        SharedSpeed.Value += incrementSpeed;
+        SharedSpeed.Value = Mathf.Min(SharedSpeed.Value + incrementSpeed, maxSpeed); //速度上限あり
 
         // 2. 自分の向きを反転フラグを更新
         isReversed = !isReversed;

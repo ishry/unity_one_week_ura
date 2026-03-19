@@ -3,6 +3,7 @@ using UniRx;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using DG.Tweening;
 
 public enum ItemType
 {
@@ -71,6 +72,9 @@ public class GameManager : MonoBehaviour
         // UI初期化
         UpdateScoreText();
         UpdateLifeUI();
+
+        // ハートが動くアニメーション開始
+        StartCoroutine(HeartbeatRoutine());
 
         // ゲーム開始
         AssignUniqueRequestsToBoxes(); // リクエストは最初から出しておく
@@ -141,6 +145,17 @@ public class GameManager : MonoBehaviour
         score += amount;
         UpdateScoreText();    
         Debug.Log("スコアアップ！ 現在のスコア: " + score);
+
+        // スコアテキストのアニメーション
+        if (scoreText != null)
+        {
+            // アニメーションが連続で呼ばれた時に巨大化し続けるのを防ぐため，一度リセットする
+            scoreText.transform.DOKill(true);
+            scoreText.transform.localScale = Vector3.one;
+
+            // ポコン！と跳ねる演出
+            scoreText.transform.DOPunchScale(new Vector3(0.1f, 0.1f, 0f), 0.3f, 10, 1f);
+        }
     }
 
     private void DecreaseLife()
@@ -232,6 +247,35 @@ public class GameManager : MonoBehaviour
                 if (box != null)
                 {
                     box.SetRequest(assignedType, assignedSprite);
+                }
+            }
+        }
+    }
+
+    private IEnumerator HeartbeatRoutine()
+    {
+        while (true) // ゲーム中ずっとループ
+        {
+            // 3秒〜5秒のランダムな間隔で待機
+            yield return new WaitForSeconds(2f);
+
+            // ゲームオーバーじゃなければ実行
+            if (life > 0)
+            {
+                // 現在「満タン」になっているハート（インデックス 0 から life-1 まで）だけを揺らす
+                for (int i = 0; i < life; i++)
+                {
+                    if (lifeImages[i] != null)
+                    {
+                        RectTransform heartRect = lifeImages[i].rectTransform;
+                        
+                        // 他のアニメーションと被らないようにリセット
+                        heartRect.DOKill(true);
+                        heartRect.localScale = Vector3.one;
+
+                        // ドクン！という心臓の鼓動のような蠢き
+                        heartRect.DOPunchScale(new Vector3(0.15f, 0.15f, 0f), 0.3f, 2, 0.5f);
+                    }
                 }
             }
         }

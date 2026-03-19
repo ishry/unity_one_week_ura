@@ -21,11 +21,19 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private GameObject optionPanel;
     [SerializeField] private Button optionButton;
 
+    [Header("遊び方オプション")]
+    [SerializeField] private GameObject tutorialPanel;
+    [SerializeField] private Button tutorialButton;
+    [SerializeField] private TMP_Text tutorialButtonText;
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color disabledColor = Color.gray;
+
     [Header("SE")]
     [SerializeField] private AudioClip gameStartSE;
 
     private bool isSceneTransitioning = false;
     private bool isOptionOpen = false;
+    private bool isTutorialOpen = false;
 
     private Tweener blinkTweener;   
 
@@ -41,15 +49,16 @@ public class TitleManager : MonoBehaviour
                                     .SetLoops(-1, LoopType.Yoyo)
                                     .SetEase(Ease.InOutSine);
         }        
-        optionPanel.SetActive(false); // 最初はオプションパネルをオフにする
-        optionButton.interactable = true;  // 最初はボタンを押せる
+        if (optionPanel != null) optionPanel.SetActive(false);
+        if (tutorialPanel != null) tutorialPanel.SetActive(false);
+        SetButtonsInteractable(true);
         
     }
 
     void Update()
     {
         // シーン遷移中 or オーディオオプションを開いている時はクリック無効
-        if (isSceneTransitioning || isOptionOpen) return;
+        if (isSceneTransitioning || isOptionOpen || isTutorialOpen) return;
 
         // マウスが接続されていて，左クリックが押されたフレームのみ判定
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
@@ -65,14 +74,13 @@ public class TitleManager : MonoBehaviour
     private void StartTransition()
     {
         isSceneTransitioning = true;
+        SetButtonsInteractable(false);
         SEManager.Instance.PlaySE(gameStartSE);
         
         // クリックされたら点滅停止
         if (blinkTweener != null)
         {
-            // trueを渡すと、現在のアルファ値で即座に終了する
             blinkTweener.Kill(true); 
-            // 念のため、テキストは表示状態にしておく（画面が暗くなる時に一緒に消えるようにするため）
             startText.color = new Color(startText.color.r, startText.color.g, startText.color.b, 1.0f);
         }
 
@@ -85,20 +93,45 @@ public class TitleManager : MonoBehaviour
                  });
     }
 
-    // ボタンが参照
+    private void SetButtonsInteractable(bool state)
+    {
+        if (optionButton != null) optionButton.interactable = state;
+        if (tutorialButton != null) tutorialButton.interactable = state;
+        if (tutorialButtonText != null) 
+        {
+            tutorialButtonText.color = state ? normalColor : disabledColor;
+        }
+    }
+
+    // 以下ボタンが参照する関数
+
     public void OpenOptionPanel()
     {
         if (isSceneTransitioning) return;
         isOptionOpen = true;
         if (optionPanel != null) optionPanel.SetActive(true);
-        if (optionButton != null) optionButton.interactable = false;
+        SetButtonsInteractable(false); // パネルを開いたらボタンを両方無効化
     }
 
-    //　ボタンが参照
     public void CloseOptionPanel()
     {
         isOptionOpen = false;
         if (optionPanel != null) optionPanel.SetActive(false);
-        if (optionButton != null) optionButton.interactable = true;
+        SetButtonsInteractable(true); // パネルを閉じたらボタンを両方復活
+    }
+
+    public void OpenTutorialPanel()
+    {
+        if (isSceneTransitioning) return;
+        isTutorialOpen = true;
+        if (tutorialPanel != null) tutorialPanel.SetActive(true);
+        SetButtonsInteractable(false); // パネルを開いたらボタンを両方無効化
+    }
+
+    public void CloseTutorialPanel()
+    {
+        isTutorialOpen = false;
+        if (tutorialPanel != null) tutorialPanel.SetActive(false);
+        SetButtonsInteractable(true); // パネルを閉じたらボタンを両方復活
     }
 }

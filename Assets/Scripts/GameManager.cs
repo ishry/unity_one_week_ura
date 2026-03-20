@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using DG.Tweening;
+using unityroom.Api; // スコアランキング用
 
 public enum ItemType
 {
@@ -196,6 +197,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("ゲームオーバー！");
 
         scoreText.enabled = false; //スコア表示を消しておく
+        UnityroomApiClient.Instance.SendScore(1, score, ScoreboardWriteMode.HighScoreDesc);
 
         //ベルトのクリック判定を停止
         foreach (BeltConveyor beltConveyor in beltConveyors)

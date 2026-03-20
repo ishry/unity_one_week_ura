@@ -4315,7 +4315,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: CLICK TO RESTART
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 33c8f84918a774507839ef386bf71593, type: 2}
   m_sharedMaterial: {fileID: 8573572861833551183, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4385,7 +4385,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 1202200900}
   m_maskType: 0
 --- !u!23 &1202200900
@@ -5586,7 +5586,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Score:99999
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 33c8f84918a774507839ef386bf71593, type: 2}
   m_sharedMaterial: {fileID: 8573572861833551183, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5656,7 +5656,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 1556874437}
   m_maskType: 0
 --- !u!23 &1556874437
@@ -7162,8 +7162,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Score: 00000'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
-  m_sharedMaterial: {fileID: 8573572861833551183, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 33c8f84918a774507839ef386bf71593, type: 2}
+  m_sharedMaterial: {fileID: -2726749447805708672, guid: 33c8f84918a774507839ef386bf71593, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9004,7 +9004,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Game Over
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 33c8f84918a774507839ef386bf71593, type: 2}
   m_sharedMaterial: {fileID: 8573572861833551183, guid: c2b3674d0200e478aab4133a697f6e4d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -9074,7 +9074,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_renderer: {fileID: 2112058490}
   m_maskType: 0
 --- !u!23 &2112058490

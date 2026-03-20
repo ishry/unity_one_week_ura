@@ -1,5 +1,6 @@
 using UnityEngine;
 using UniRx;
+using TMPro;
 
 public class BeltConveyor : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class BeltConveyor : MonoBehaviour
 
     [Header("SE")]
     [SerializeField] private AudioClip clickSE;
+
+    [Header("debug")]
+    [SerializeField] private TMP_Text debugText;
 
     [HideInInspector] public bool canClick;
     public static ReactiveProperty<float> SharedSpeed;
@@ -46,6 +50,9 @@ public class BeltConveyor : MonoBehaviour
 
         // 1. 全体のスピードを上げる（これで全員の Subscribe が発火）
         SharedSpeed.Value = Mathf.Min(SharedSpeed.Value + incrementSpeed, maxSpeed); //速度上限あり
+        // ---debug ---
+        debugText.text = SharedSpeed.Value.ToString();
+        // ------
 
         // 2. 自分の向きを反転フラグを更新
         isReversed = !isReversed;

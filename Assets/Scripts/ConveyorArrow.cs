@@ -25,20 +25,13 @@ public class ConveyorArrow : MonoBehaviour
     void Awake()
     {
         rawImage = GetComponent<RawImage>();
-    }
-
-    void Start()
-    {
-        // 1. 初期の演出設定（色とScale）を保存しておく
+   
+        //見た目の初期化
         initialColor = rawImage.color;
         initialScale = transform.localScale;
-
-        // 2. 現在の directionBool の状態に合わせて，演出を初期化する
         UpdateVisuals();
 
-        // 3. UVスクロールのアニメーションを開始（初期速度1.0f）
-        // この演出では，スクロール自体の向きは常に一定
-        UpdateAnimation(1.0f);
+        // 速度の初期化はBeltConveyorが指令する
     }
 
     // Beltから呼ばれる反転命令

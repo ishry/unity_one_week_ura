@@ -19,10 +19,10 @@ public class VolumeManager : MonoBehaviour
 
     void Start()
     {
-        // 1. 保存されている音量を読み込む（なければデフォルトの 1.0f にする）
-        float masterVol = PlayerPrefs.GetFloat(MasterVolumeKey, 1.0f);
-        float bgmVol = PlayerPrefs.GetFloat(BGMVolumeKey, 1.0f);
-        float seVol = PlayerPrefs.GetFloat(SEVolumeKey, 1.0f);
+        // 1. 保存されている音量を読み込む（なければデフォルトの 0.5f にする）
+        float masterVol = PlayerPrefs.GetFloat(MasterVolumeKey, 0.5f);
+        float bgmVol = PlayerPrefs.GetFloat(BGMVolumeKey, 0.5f);
+        float seVol = PlayerPrefs.GetFloat(SEVolumeKey, 0.5f);
 
         // 2. スライダーの位置を読み込んだ値に合わせる
         if (masterSlider != null) masterSlider.value = masterVol;

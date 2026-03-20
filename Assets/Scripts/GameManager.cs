@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     [Header("ゲームパラメタ")]
     [SerializeField] private float initialWaitTime = 2.0f; // 開始までの待機時間（秒）
-    
+
     private int score = 0;
     private int life = 3;
     
